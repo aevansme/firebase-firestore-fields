@@ -11,10 +11,18 @@ function parseFields(fields) {
 function parseValue(value) {
     const type = Object.keys(value)[0];
 
+	if (value == null || value == '' || type == null || type == '') {
+		console.log("Cannot parse null value");
+		return;
+	}
+	
     switch (type) {
         case 'geoPointValue':
             return [value.geoPointValue.latitude, value.geoPointValue.longitude];
         case 'arrayValue':
+			if (value.arrayValue == null || value.arrayValue.values == null) {
+				return;
+			}
             return value.arrayValue.values.map(parseValue);
         case 'mapValue':
             return parseFields(value.mapValue.fields);
